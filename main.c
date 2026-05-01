@@ -5,14 +5,15 @@ void display(int arr[3][3]){
          printf("\n");
         for(int j = 0;j < 3;j++){
             printf("%d", arr[i][j]);
-            printf(" | ");
+            if(j < 2){
+                printf(" | ");
+            }
         }
-        printf("\b\b \n");
-        if(i != 2){
-            printf("----------");
+        if(i < 2){
+            printf("\n----------");
         }
     }
-    printf("----------------------------\n");
+    printf("\n----------------------------\n");
 
 }
 
@@ -35,6 +36,10 @@ void selection(int arr[3][3], int n){
     do{
         printf("choice: ");
         scanf("%d", &choice);
+        if (choice < 1 || choice > 9) {
+            printf("Choice must be between 1-9\n");
+            continue;
+        }
         choice--;
         j = choice % 3;
         i = choice/3;
@@ -55,23 +60,20 @@ int checkWin(int arr[3][3]){
     if(arr[i][j] == arr[i+1][j+1] && arr[i+1][j+1] == arr[i+2][j+2]){
         return arr[i][j];
     }
-
-    for(i = 0, j = 0; i < 3; i++){
+    
+    for(i = 0, j = 0; i <= 2; i++){
         if(arr[i][j] == arr[i][j+1] && arr[i][j+1] == arr[i][j+2]){
             return arr[i][j];
         }
     }
 
-    if(arr[i][j] == arr[i+1][j-1] && arr[i+1][j-1] == arr[j][i]){
-        return arr[i][j];
-    }
-
-    for(i=0, j = 0; j < 3; j++){
+    for(i=0, j = 0; j <= 2; j++){
         if(arr[i][j] == arr[i+1][j] && arr[i+1][j] == arr[i+2][j]){
             return arr[i][j];
         }
     }
 
+    j--;
     if(arr[i][j] == arr[i+1][j-1] && arr[i+1][j-1] == arr[j][i]){
         return arr[i][j];
     }
