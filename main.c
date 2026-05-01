@@ -12,7 +12,21 @@ void display(int arr[3][3]){
             printf("----------");
         }
     }
+    printf("----------------------------\n");
 
+}
+
+void tutorial(){
+    int test[3][3];
+    int x = 1;
+    printf("select position in the grid by numbers as shown below: \n");
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            test[i][j] = x;
+            x++;
+        }
+    }
+    display(test);
 }
 
 void selection(int arr[3][3], int n){
@@ -77,25 +91,25 @@ char restart(){
 }
 
 int main(){
+    tutorial();
     int arr[3][3]={0};
     int winner, player, q=0;
     char replay;
     do {display(arr);
-        while(q != 9){
-            for(player = 1; player < 3; player++){
-                printf("player %d move:-\n", player);
-                selection(arr, player);
-                display(arr);
-                q++;
-                winner = checkWin(arr);
-                //printf("winner = %d", winner);
-                if(winner != 0){
-                    break;
-                }  
-                //printf("%d", player);
-                if(player == 2){
-                    player = player-2;
-                }
+        for(player = 1; player < 3; player++){
+            printf("player %d move:-\n", player);
+            selection(arr, player);
+            display(arr);
+            q++;
+            //printf("q = %d\n",q);
+            winner = checkWin(arr);
+            //printf("winner = %d\n", winner);
+            if(winner != 0 ||  q == 9){
+                break;
+            }
+            //printf("player: %d\n", player);
+            if(player == 2){
+                player = player-2;
             }
         }
         if(winner !=0){ 
