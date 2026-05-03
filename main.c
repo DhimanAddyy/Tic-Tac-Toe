@@ -1,10 +1,23 @@
 #include <stdio.h>
 
 void display(int arr[3][3]){
+    char arrc[3][3];
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            if (arr[i][j] == 1){
+                arrc[i][j] = 'X';
+            }
+            else if (arr[i][j] == 2){
+                arrc[i][j] = 'O';
+            }
+            else {
+                arrc[i][j] = ' ';
+            }
+        }}
     for(int i = 0;i < 3;i++){
          printf("\n");
         for(int j = 0;j < 3;j++){
-            printf("%d", arr[i][j]);
+            printf("%c", arrc[i][j]);
             if(j < 2){
                 printf(" | ");
             }
@@ -27,7 +40,19 @@ void tutorial(){
             x++;
         }
     }
-    display(test);
+    for(int i = 0;i < 3;i++){
+         printf("\n");
+        for(int j = 0;j < 3;j++){
+            printf("%d", test[i][j]);
+            if(j < 2){
+                printf(" | ");
+            }
+        }
+        if(i < 2){
+            printf("\n----------");
+        }
+    }
+    printf("\n----------------------------\n");
 }
 
 void selection(int arr[3][3], int n){
