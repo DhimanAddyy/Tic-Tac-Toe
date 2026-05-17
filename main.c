@@ -13,7 +13,8 @@ void display(int arr[3][3]){
             else {
                 arrc[i][j] = ' ';
             }
-        }}
+        }
+    }
     for(int i = 0;i < 3;i++){
          printf("\n");
         for(int j = 0;j < 3;j++){
@@ -27,7 +28,6 @@ void display(int arr[3][3]){
         }
     }
     printf("\n----------------------------\n");
-
 }
 
 void tutorial(){
@@ -55,28 +55,65 @@ void tutorial(){
     printf("\n----------------------------\n");
 }
 
-void selection(int arr[3][3], int n){
+void selection(int arr[3][3], int n, int comp){
     int choice;
     int i, j;
     do{
-        printf("choice: ");
-        scanf("%d", &choice);
-        if (choice < 1 || choice > 9) {
-            printf("Choice must be between 1-9\n");
-            continue;
+        if(comp == 0){
+            printf("choice: ");
+            scanf("%d", &choice);
+            if (choice < 1 || choice > 9) {
+                printf("Choice must be between 1-9\n");
+                choice = 5;
+                continue;
+            }
+            choice--;
+            j = choice % 3;
+            i = choice/3;
+            if(arr[i][j] == 0){
+                arr[i][j]=n;
+                break;
+            }
+            else{
+                printf("Please choose an empty space\n");
+                display(arr);
+            }
         }
-        choice--;
-        j = choice % 3;
-        i = choice/3;
-        if(arr[i][j] == 0){
+        else {
+            choice = comp;
+            choice--;
+            j = choice % 3;
+            i = choice/3;
             arr[i][j]=n;
-            break;
+                break;
         }
-        else{
-            printf("Please choose an empty space\n");
-            display(arr);
-        }
+        
     }while(1);
+}
+
+void rotate(int arr[3][3]){
+    int fin[3][3];
+    for(int i=0 ; i<3 ; i++){
+        for(int j=0 ; j<3 ; j++){
+            fin[j][2-i]=arr[i][j];
+        }
+    }
+    for(int i=0 ; i<3 ; i++){
+        for(int j=0 ; j<3 ; j++){
+            arr[i][j]=fin[i][j];
+        }
+    }
+}
+
+int bot(int arr[3][3]){
+    for(int i = 0, j = 0; i < 3; i++,j++){
+        if(arr[i][j] == arr[i][j+1] || arr[i][j] == arr[i][j+2] || arr[i][j+1] == arr[i][j+2]){
+
+        }
+        else if(arr[i][j] == arr[i+1][j] || arr[i][j] == arr[i+2][j] || arr[i+1][j] == arr[i+2][j]){
+
+        }
+    }
 }
 
 int checkWin(int arr[3][3]){
@@ -118,36 +155,88 @@ char restart(){
 }
 
 int main(){
-    tutorial();
-    int arr[3][3]={0};
+    int menuChoice;
     int winner, player, q=0;
     char replay;
-    do {display(arr);
-        for(player = 1; player < 3; player++){
-            printf("player %d move:-\n", player);
-            selection(arr, player);
-            display(arr);
-            q++;
-            //printf("q = %d\n",q);
-            winner = checkWin(arr);
-            //printf("winner = %d\n", winner);
-            if(winner != 0 ||  q == 9){
+    int comp;
+    do{
+        int arr[3][3]={0};
+        printf("\nX-------Tic-Tac-Toe-------X\n");
+        printf("1. Show tutorial\n");
+        printf("2. Player v/s player\n");
+        printf("3. Player v/s computer\n");
+        printf("4. Exit\n");
+        //printf("");
+        printf("\nChoose one(1-6): ");
+        scanf("%d",&menuChoice);
+        switch(menuChoice)  {
+            case 1:
+                tutorial();
                 break;
-            }
-            //printf("player: %d\n", player);
-            if(player == 2){
-                player = player-2;
-            }
+            case 2:
+                comp = 0;
+                do {display(arr);
+                    for(player = 1; player < 3; player = 3 - player){
+                        printf("player %d move:-\n", player);
+                        selection(arr, player, comp);
+                        display(arr);
+                        q++;
+                        //printf("q = %d\n",q);
+                        winner = checkWin(arr);
+                        //printf("winner = %d\n", winner);
+                        if(winner != 0 ||  q == 9){
+                            break;
+                        }
+                    }
+                    if(winner !=0){ 
+                        printf("Player %d has won!", player);
+                    } else {printf("\nDraw\n");}
+                    q = 0;
+                    for(int i = 0;i < 3;i++){
+                        for(int j = 0;j < 3;j++){
+                            arr[i][j] = 0;
+                        }
+                    }    
+                    replay = restart();
+                } while(replay == 'y');
+                break;
+            case 3:
+                do {display(arr);
+                    for(player = 1; player < 3; player = 3 - player){
+                        printf("player %d move:-\n", player);
+                        if(player == 1){
+                            comp = 0;
+                            selection(arr, player, comp);
+                            display(arr);
+                            q++;
+                        } else {
+                            comp = bot(arr);
+                            selection(arr, player, comp);
+                            display(arr);
+                            q++;
+                        }
+                        //printf("q = %d\n",q);
+                        winner = checkWin(arr);
+                        //printf("winner = %d\n", winner);
+                        if(winner != 0 ||  q == 9){
+                            break;
+                        }
+                    }
+                    if(winner !=0){ 
+                        printf("Player %d has won!", player);
+                    } else {printf("\nDraw\n");}
+                    q = 0;
+                    for(int i = 0;i < 3;i++){
+                        for(int j = 0;j < 3;j++){
+                            arr[i][j] = 0;
+                        }
+                    }    
+                    replay = restart();
+                } while(replay == 'y');
+                break;
+            case 4:
+                printf("Exiting game...");
+                break;
         }
-        if(winner !=0){ 
-            printf("Player %d has won!", player);
-        } else {printf("\nDraw\n");}
-        q = 0;
-        for(int i = 0;i < 3;i++){
-            for(int j = 0;j < 3;j++){
-                arr[i][j] = 0;
-            }
-        }    
-        replay = restart();
-    } while(replay == 'y');
+    }while(menuChoice != 4);
 }
